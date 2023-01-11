@@ -7,7 +7,7 @@ const scoreSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
-    score: {
+    value: {
       type: Number,
       required: [true, "Please add a value"],
     },
@@ -15,6 +15,11 @@ const scoreSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: [true, "Please provide a session"],
       ref: "Session",
+    },
+    participant: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, "Please provide a participant"],
+      ref: "Participant",
     },
   },
   {

@@ -15,16 +15,15 @@ const getSeessions = asyncHandler(async (req, res) => {
 // @route   POST /api/sessions
 // @access  Private
 const setSession = asyncHandler(async (req, res) => {
-  const { name, participants, game } = req.body;
-  if (!name || !participants || !game) {
+  const { participants, game } = req.body;
+  if (!participants || !game) {
     res.status(400);
     throw new Error("Please provide necessary information");
   }
 
   const session = await Session.create({
-    name: name,
     user: req.user.id,
-    participants: participants,
+    participants: JSON.parse(participants),
     game: game,
   });
 
@@ -60,8 +59,7 @@ const deleteSession = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  getGames,
-  setGame,
-  updateGame,
-  deleteGame,
+  getSeessions,
+  setSession,
+  deleteSession,
 };

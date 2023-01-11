@@ -9,11 +9,10 @@ const participantSchema = mongoose.Schema(
     },
     name: {
       type: String,
-      unique: true,
       required: [true, "Please add a name"],
     },
     score: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Score",
     },
   },
@@ -21,5 +20,6 @@ const participantSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+participantSchema.index({ user: 1, name: 1 }, { unique: true });
 
 module.exports = mongoose.model("Participant", participantSchema);
