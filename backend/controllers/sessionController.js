@@ -41,14 +41,12 @@ const deleteSession = asyncHandler(async (req, res) => {
     throw new Error("Session not found");
   }
 
-  const user = await User.findById(req.user.id);
-
-  if (!user) {
+  if (!req.user) {
     res.status(401);
     throw new Error("User not found");
   }
 
-  if (session.user.toString() !== user.id) {
+  if (session.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized");
   }
