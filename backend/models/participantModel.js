@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const gameSchema = mongoose.Schema(
+const participantSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -9,7 +9,12 @@ const gameSchema = mongoose.Schema(
     },
     name: {
       type: String,
+      unique: true,
       required: [true, "Please add a name"],
+    },
+    score: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Score",
     },
   },
   {
@@ -17,4 +22,4 @@ const gameSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Game", gameSchema);
+module.exports = mongoose.model("Participant", participantSchema);
