@@ -34,22 +34,24 @@ function Header() {
               aria-label="menu"
               sx={{ mr: 2 }}
             ></IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              <Link to="/">Dashboard</Link>
-            </Typography>
             {user ? (
-              <Button onClick={onLogout} color="inherit">
-                <FaSignOutAlt /> Logout
-              </Button>
-            ) : (
               <>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                  <Link to="/">Dashboard</Link>
+                </Typography>
+                <Button onClick={onLogout} color="inherit">
+                  <FaSignOutAlt /> Logout
+                </Button>
+              </>
+            ) : (
+              <div className="ml-auto flex">
                 <Link className="flex items-center gap-1 px-4" to="/login">
                   <FaSignInAlt /> Login
                 </Link>
                 <Link className="flex items-center gap-1 px-4" to="/register">
                   <FaUser /> Register
                 </Link>
-              </>
+              </div>
             )}
           </Toolbar>
         </AppBar>

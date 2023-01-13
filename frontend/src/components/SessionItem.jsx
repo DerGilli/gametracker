@@ -3,10 +3,8 @@ import { useSelector } from "react-redux";
 import boardGame from "../assets/default_board_game_small.jpg";
 
 function SessionItem(props) {
-  console.log(props.session);
   const gameState = useSelector((state) => state.game);
   const participantState = useSelector((state) => state.participant);
-  console.log(participantState.participants);
 
   return (
     <Card>
