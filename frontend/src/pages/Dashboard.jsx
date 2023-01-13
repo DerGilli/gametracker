@@ -1,59 +1,63 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import GameForm from "../components/GameForm";
-import GameItem from "../components/GameItem";
+import SessionForm from "../components/SessionForm";
 import Spinner from "../components/Spinner";
-import { getGames, reset } from "../features/games/gameSlice";
+import {
+  getSessions,
+  reset as sessionReset,
+} from "../features/sessions/sessionSlice";
+import { toast } from "react-toastify";
 
 function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
-  const { games, isLoading, isError, message } = useSelector(
-    (state) => state.game
-  );
+  const sessionState = useSelector((state) => state.session);
 
   useEffect(() => {
-    if (isError) {
-      console.log(message);
+    dispatch(getSessions());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (sessionState.isError) {
+      toast.error(sessionState.message);
     }
 
-    console.log(user);
     if (!user) {
       navigate("/login");
-    } else {
-      dispatch(getGames());
     }
 
     return () => {
-      dispatch(reset());
+      dispatch(sessionReset());
     };
-  }, [user, navigate, isError, message, dispatch]);
+  }, [user, navigate, sessionState.isError, sessionState.message, dispatch]);
 
-  if (isLoading) {
+  if (sessionState.isLoading) {
     return <Spinner />;
   }
+
+  console.log(sessionState);
 
   return (
     <>
       <section className="heading">
         <h1>Welcome {user && user.name}</h1>
-        <p>Goals Dashboard</p>
+        <p>Session Dashboard</p>
       </section>
 
-      <GameForm />
+      <SessionForm />
 
       <section className="content">
-        {games.length > 0 ? (
+        {sessionState.sessions.length > 0 ? (
           <div className="goals">
-            {games.map((game) => (
-              <GameItem key={game._id} game={game} />
+            {sessionState.sessions.map((session) => (
+              <p key={session._id}>{session._id}</p>
             ))}
           </div>
         ) : (
-          <h3>You have not set any goals</h3>
+          <h3>You don't have any sessions yet</h3>
         )}
       </section>
     </>

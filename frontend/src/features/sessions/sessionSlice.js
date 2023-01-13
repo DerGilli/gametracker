@@ -1,33 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import gameService from "./gameService";
+import sessionService from "./sessionService";
 
 const initialState = {
-  games: [],
+  sessions: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
 };
 
-export const getGames = createAsyncThunk("game/get", async (_, thunkAPI) => {
-  try {
-    const token = thunkAPI.getState().auth.user.token;
-    return await gameService.getGames(token);
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
-  }
-});
-
-export const createGame = createAsyncThunk(
-  "game/create",
-  async (game, thunkAPI) => {
+export const getSessions = createAsyncThunk(
+  "session/get",
+  async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await gameService.createGame(game, token);
+      return await sessionService.getSessions(token);
     } catch (error) {
       const message =
         (error.response &&
@@ -40,12 +27,12 @@ export const createGame = createAsyncThunk(
   }
 );
 
-export const updateGame = createAsyncThunk(
-  "game/update",
-  async (game, thunkAPI) => {
+export const createSession = createAsyncThunk(
+  "session/create",
+  async (session, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await gameService.updateGame(game, token);
+      return await sessionService.createSession(session, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -58,12 +45,12 @@ export const updateGame = createAsyncThunk(
   }
 );
 
-export const deleteGame = createAsyncThunk(
-  "game/delete",
-  async (gameId, thunkAPI) => {
+export const updateSession = createAsyncThunk(
+  "session/update",
+  async (session, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await gameService.deleteGame(gameId, token);
+      return await sessionService.updateSession(session, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -76,8 +63,26 @@ export const deleteGame = createAsyncThunk(
   }
 );
 
-export const gameSlice = createSlice({
-  name: "game",
+export const deleteSession = createAsyncThunk(
+  "session/delete",
+  async (sessionId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await sessionService.deleteSession(sessionId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const sessionSlice = createSlice({
+  name: "session",
   initialState,
   reducers: {
     reset: (state) => {
@@ -89,57 +94,57 @@ export const gameSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getGames.pending, (state) => {
+      .addCase(getSessions.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getGames.fulfilled, (state, action) => {
+      .addCase(getSessions.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.games = action.payload;
+        state.sessions = action.payload;
       })
-      .addCase(getGames.rejected, (state, action) => {
+      .addCase(getSessions.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        state.games = [];
+        state.sessions = [];
       })
-      .addCase(createGame.pending, (state) => {
+      .addCase(createSession.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createGame.fulfilled, (state, action) => {
+      .addCase(createSession.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.games.push(action.payload);
+        state.sessions.push(action.payload);
       })
-      .addCase(createGame.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(updateGame.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateGame.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.games = [...state.games, action.payload];
-      })
-      .addCase(updateGame.rejected, (state, action) => {
+      .addCase(createSession.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(deleteGame.pending, (state) => {
+      .addCase(updateSession.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteGame.fulfilled, (state, action) => {
+      .addCase(updateSession.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.games = state.games.filter((game) => {
-          return game._id !== action.payload.id;
+        state.sessions = [...state.sessions, action.payload];
+      })
+      .addCase(updateSession.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(deleteSession.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteSession.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.sessions = state.sessions.filter((session) => {
+          return session._id !== action.payload.id;
         });
       })
-      .addCase(deleteGame.rejected, (state, action) => {
+      .addCase(deleteSession.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -147,5 +152,5 @@ export const gameSlice = createSlice({
   },
 });
 
-export const { reset } = gameSlice.actions;
-export default gameSlice.reducer;
+export const { reset } = sessionSlice.actions;
+export default sessionSlice.reducer;

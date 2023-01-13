@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const Session = require("../models/sessionModel");
 const User = require("../models/userModel");
+const Game = require("../models/gameModel");
+const Participant = require("../models/participantModel");
 
 // @desc    Get session
 // @route   GET /api/sessions
@@ -21,9 +23,22 @@ const setSession = asyncHandler(async (req, res) => {
     throw new Error("Please provide necessary information");
   }
 
+  if (!(await Game.findById(game))) {
+    res.status(400);
+    throw new Error("Game not found");
+  }
+
+  for (let i = 0; i < participants.length; i++) {
+    const participant = participants[i];
+    if (!(await Participant.findById(participant))) {
+      res.status(400);
+      throw new Error("At least one Participant could not be found");
+    }
+  }
+
   const session = await Session.create({
     user: req.user.id,
-    participants: JSON.parse(participants),
+    participants: participants,
     game: game,
   });
 

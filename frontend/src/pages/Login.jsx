@@ -21,14 +21,11 @@ function Login() {
     (state) => state.auth
   );
 
-  console.log(user);
-
   useEffect(() => {
     if (isError) {
       toast.error(message);
     }
     if (isSuccess || user) {
-      console.log("sucess");
       navigate("/");
     }
 

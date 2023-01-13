@@ -79,7 +79,7 @@ const deleteGame = asyncHandler(async (req, res) => {
 
   await game.remove();
 
-  res.json({ message: `${game.name} removed` });
+  res.json({ id: game._id });
 });
 
 module.exports = {
