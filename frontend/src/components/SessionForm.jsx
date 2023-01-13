@@ -38,7 +38,6 @@ function SessionForm() {
   const dispatch = useDispatch();
 
   const onSubmit = async (e) => {
-    console.log(e);
     e.preventDefault();
 
     let createdGame;

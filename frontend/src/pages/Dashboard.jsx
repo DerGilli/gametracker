@@ -38,8 +38,6 @@ function Dashboard() {
     return <Spinner />;
   }
 
-  console.log(sessionState);
-
   return (
     <>
       <section className="heading">
