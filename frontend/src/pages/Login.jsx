@@ -5,6 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { login, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
+import {
+  Card,
+  CardContent,
+  Button,
+  FormControl,
+  TextField,
+} from "@mui/material";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -55,47 +62,45 @@ function Login() {
   }
 
   return (
-    <>
-      <section className="heading">
-        <h1>
-          <FaSignInAlt /> Login
-        </h1>
-        <p>Login and start setting goals</p>
-      </section>
+    <Card sx={{ maxWidth: 800, margin: "auto" }}>
+      <CardContent>
+        <section className="mb-5">
+          <h1 className="text-4xl flex justify-center items-center gap-1">
+            <FaSignInAlt /> Login
+          </h1>
+          <p className="text-center">Login and start tracking your games</p>
+        </section>
 
-      <section className="form">
-        <form onSubmit={onSubmit}>
-          <div className="form-group">
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              name="email"
-              value={email}
-              placeholder="Enter your email"
-              onChange={onChange}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              name="password"
-              value={password}
-              placeholder="Enter password"
-              onChange={onChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <button type="submit" className="btn btn-block">
+        <section className="form">
+          <form onSubmit={onSubmit} className="flex flex-col gap-3">
+            <FormControl fullWidth>
+              <TextField
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={onChange}
+                placeholder="Enter your email"
+              />
+            </FormControl>
+            <FormControl>
+              <TextField
+                type="password"
+                className="form-control"
+                id="password"
+                name="password"
+                value={password}
+                placeholder="Enter password"
+                onChange={onChange}
+              />
+            </FormControl>
+            <Button type="submit" variant="contained">
               Submit
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+            </Button>
+          </form>
+        </section>
+      </CardContent>
+    </Card>
   );
 }
 

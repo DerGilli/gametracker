@@ -5,6 +5,13 @@ import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
 import { register, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
+import {
+  Card,
+  CardContent,
+  FormControl,
+  TextField,
+  Button,
+} from "@mui/material";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -62,68 +69,66 @@ function Register() {
   }
 
   return (
-    <>
-      <section className="heading">
-        <h1>
-          <FaUser /> Register
-        </h1>
-        <p>Please create an account</p>
-      </section>
+    <Card sx={{ maxWidth: 800, margin: "auto" }}>
+      <CardContent>
+        <section className="mb-5">
+          <h1 className="text-4xl flex justify-center items-center gap-1">
+            <FaUser /> Register
+          </h1>
+          <p className="text-center">Please create an account</p>
+        </section>
 
-      <section className="form">
-        <form onSubmit={onSubmit}>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              name="name"
-              value={name}
-              placeholder="Enter your name"
-              onChange={onChange}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              name="email"
-              value={email}
-              placeholder="Enter your email"
-              onChange={onChange}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              name="password"
-              value={password}
-              placeholder="Enter password"
-              onChange={onChange}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              className="form-control"
-              id="password2"
-              name="password2"
-              value={password2}
-              placeholder="Confirm password"
-              onChange={onChange}
-            />
-          </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-block">
+        <section className="form">
+          <form onSubmit={onSubmit} className="flex flex-col gap-3">
+            <FormControl fullWidth>
+              <TextField
+                type="name"
+                id="name"
+                name="name"
+                value={name}
+                onChange={onChange}
+                placeholder="Enter your name"
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={onChange}
+                placeholder="Enter your email"
+              />
+            </FormControl>
+            <FormControl>
+              <TextField
+                type="password"
+                className="form-control"
+                id="password"
+                name="password"
+                value={password}
+                placeholder="Enter password"
+                onChange={onChange}
+              />
+            </FormControl>
+            <FormControl>
+              <TextField
+                type="password"
+                className="form-control"
+                id="password2"
+                name="password2"
+                value={password2}
+                placeholder="Confirm password"
+                onChange={onChange}
+              />
+            </FormControl>
+            <Button type="submit" variant="contained">
               Submit
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+            </Button>
+          </form>
+        </section>
+      </CardContent>
+    </Card>
   );
 }
 export default Register;

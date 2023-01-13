@@ -7,24 +7,13 @@ import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import {
   createParticipant,
-  getParticipants,
   reset as participantReset,
 } from "../features/participants/participantSlice";
-import {
-  createGame,
-  getGames,
-  reset as gamesReset,
-} from "../features/games/gameSlice";
+import { createGame, reset as gamesReset } from "../features/games/gameSlice";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-} from "@mui/material";
+import { Card, Button, CardContent } from "@mui/material";
 
 const filter = createFilterOptions();
 
@@ -68,14 +57,6 @@ function SessionForm() {
   };
 
   useEffect(() => {
-    dispatch(getParticipants());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getGames());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (participantState.isError) {
       toast.error(participantState.message);
     }
@@ -100,103 +81,101 @@ function SessionForm() {
   }
 
   return (
-    <Box>
-      <Accordion>
-        <AccordionSummary>Create Session</AccordionSummary>
-        <AccordionDetails>
-          <form onSubmit={onSubmit}>
-            <Grid container rowSpacing={3}>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <Autocomplete
-                    multiple
-                    freeSolo
-                    autoHighlight
-                    selectOnFocus
-                    clearOnBlur
-                    handleHomeEndKeys
-                    options={participantState.participants}
-                    filterOptions={(options, params) => {
-                      const filtered = filter(options, params);
+    <Card>
+      <CardContent>
+        <p className="text-xl mb-3">Create Session</p>
+        <form onSubmit={onSubmit}>
+          <Grid container rowSpacing={3}>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <Autocomplete
+                  multiple
+                  freeSolo
+                  autoHighlight
+                  selectOnFocus
+                  clearOnBlur
+                  handleHomeEndKeys
+                  options={participantState.participants}
+                  filterOptions={(options, params) => {
+                    const filtered = filter(options, params);
 
-                      const { inputValue } = params;
-                      // Suggest the creation of a new value
-                      const isExisting = options.some(
-                        (option) => inputValue === option.name
-                      );
-                      if (inputValue !== "" && !isExisting) {
-                        filtered.push({
-                          name: inputValue,
-                        });
-                      }
+                    const { inputValue } = params;
+                    // Suggest the creation of a new value
+                    const isExisting = options.some(
+                      (option) => inputValue === option.name
+                    );
+                    if (inputValue !== "" && !isExisting) {
+                      filtered.push({
+                        name: inputValue,
+                      });
+                    }
 
-                      return filtered;
-                    }}
-                    getOptionLabel={(option) => {
-                      // Value selected with enter, right from the input
-                      if (typeof option === "string") {
-                        return option;
-                      }
-                      // Regular option
-                      return option.name;
-                    }}
-                    onChange={(event, value) => setParticipants(value)}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Participants" />
-                    )}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <Autocomplete
-                    options={gameState.games}
-                    freeSolo
-                    autoHighlight
-                    selectOnFocus
-                    clearOnBlur
-                    handleHomeEndKeys
-                    getOptionLabel={(option) => {
-                      // Value selected with enter, right from the input
-                      if (typeof option === "string") {
-                        return option;
-                      }
-                      // Regular option
-                      return option.name;
-                    }}
-                    filterOptions={(options, params) => {
-                      const filtered = filter(options, params);
-
-                      const { inputValue } = params;
-                      // Suggest the creation of a new value
-                      const isExisting = options.some(
-                        (option) => inputValue === option.name
-                      );
-                      if (inputValue !== "" && !isExisting) {
-                        filtered.push({
-                          name: inputValue,
-                        });
-                      }
-
-                      return filtered;
-                    }}
-                    onChange={(event, value) => setGame(value)}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Game" />
-                    )}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item>
-                <Button type="submit" variant="contained">
-                  Save
-                </Button>
-              </Grid>
+                    return filtered;
+                  }}
+                  getOptionLabel={(option) => {
+                    // Value selected with enter, right from the input
+                    if (typeof option === "string") {
+                      return option;
+                    }
+                    // Regular option
+                    return option.name;
+                  }}
+                  onChange={(event, value) => setParticipants(value)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Participants" />
+                  )}
+                />
+              </FormControl>
             </Grid>
-          </form>
-        </AccordionDetails>
-      </Accordion>
-    </Box>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <Autocomplete
+                  options={gameState.games}
+                  freeSolo
+                  autoHighlight
+                  selectOnFocus
+                  clearOnBlur
+                  handleHomeEndKeys
+                  getOptionLabel={(option) => {
+                    // Value selected with enter, right from the input
+                    if (typeof option === "string") {
+                      return option;
+                    }
+                    // Regular option
+                    return option.name;
+                  }}
+                  filterOptions={(options, params) => {
+                    const filtered = filter(options, params);
+
+                    const { inputValue } = params;
+                    // Suggest the creation of a new value
+                    const isExisting = options.some(
+                      (option) => inputValue === option.name
+                    );
+                    if (inputValue !== "" && !isExisting) {
+                      filtered.push({
+                        name: inputValue,
+                      });
+                    }
+
+                    return filtered;
+                  }}
+                  onChange={(event, value) => setGame(value)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Game" />
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <Button type="submit" variant="contained">
+                Save
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
 

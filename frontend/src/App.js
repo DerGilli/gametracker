@@ -11,8 +11,8 @@ function App() {
   return (
     <>
       <Router>
+        <Header />
         <Container>
-          <Header />
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
