@@ -12,23 +12,23 @@ function SessionItem(props) {
     <Card onClick={props.onClick} classes={{ root: "h-full" }}>
       <CardMedia sx={{ height: 180 }} image={boardGame} title="boardgame" />
       <CardContent className="flex flex-col gap-3">
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <b>
             {
               gameState.games.find((game) => game._id === props.session.game)
                 ?.name
             }
           </b>
-          <span>
+          <small>
             {new Intl.DateTimeFormat("de-DE", {
               day: "2-digit",
-              month: "long",
+              month: "short",
               year: "numeric",
               hour: "2-digit",
               minute: "2-digit",
             }).format(new Date(props.session.createdAt))}
             {" Uhr"}
-          </span>
+          </small>
         </div>
         <div className="flex gap-1 flex-wrap">
           {props.session.participants.map((participantID) => (

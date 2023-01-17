@@ -100,7 +100,9 @@ export const sessionSlice = createSlice({
       .addCase(getSessions.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.sessions = action.payload;
+        state.sessions = action.payload.sort((a, b) =>
+          new Date(a.createdAt).getTime > new Date(b.createdAt).getTime ? 1 : -1
+        );
       })
       .addCase(getSessions.rejected, (state, action) => {
         state.isLoading = false;
@@ -114,7 +116,7 @@ export const sessionSlice = createSlice({
       .addCase(createSession.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.sessions.push(action.payload);
+        state.sessions = [action.payload, ...state.sessions];
       })
       .addCase(createSession.rejected, (state, action) => {
         state.isLoading = false;
@@ -127,7 +129,9 @@ export const sessionSlice = createSlice({
       .addCase(updateSession.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.sessions = [...state.sessions, action.payload];
+        state.sessions = [...state.sessions, action.payload].sort((a, b) =>
+          new Date(a.createdAt).getTime > new Date(b.createdAt).getTime ? 1 : -1
+        );
       })
       .addCase(updateSession.rejected, (state, action) => {
         state.isLoading = false;
@@ -140,9 +144,15 @@ export const sessionSlice = createSlice({
       .addCase(deleteSession.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.sessions = state.sessions.filter((session) => {
-          return session._id !== action.payload._id;
-        });
+        state.sessions = state.sessions
+          .filter((session) => {
+            return session._id !== action.payload._id;
+          })
+          .sort((a, b) =>
+            new Date(a.createdAt).getTime > new Date(b.createdAt).getTime
+              ? 1
+              : -1
+          );
       })
       .addCase(deleteSession.rejected, (state, action) => {
         state.isLoading = false;

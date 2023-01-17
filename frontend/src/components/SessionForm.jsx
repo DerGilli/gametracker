@@ -54,8 +54,6 @@ function SessionForm() {
       })
     );
 
-    console.log({ session: createSession.payload });
-
     for (let i = 0; i < validParticipants.length; i++) {
       const participant = validParticipants[i];
       console.log(participant);
