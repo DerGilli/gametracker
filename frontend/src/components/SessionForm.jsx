@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createSession } from "../features/sessions/sessionSlice";
+import { createScore } from "../features/scores/scoreSlice";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
@@ -46,12 +47,27 @@ function SessionForm() {
       }
     }
 
-    dispatch(
+    const createdSession = await dispatch(
       createSession({
         game: game._id ? game : createdGame.payload,
         participants: validParticipants.map((participant) => participant._id),
       })
     );
+
+    console.log({ session: createSession.payload });
+
+    for (let i = 0; i < validParticipants.length; i++) {
+      const participant = validParticipants[i];
+      console.log(participant);
+      dispatch(
+        createScore({
+          value: 0,
+          session: createdSession.payload._id,
+          participant: participant._id,
+        })
+      );
+    }
+
     setGame(null);
     setParticipants(null);
   };

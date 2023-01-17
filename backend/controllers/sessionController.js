@@ -29,8 +29,8 @@ const setSession = asyncHandler(async (req, res) => {
   }
 
   for (let i = 0; i < participants.length; i++) {
-    const participant = participants[i];
-    if (!(await Participant.findById(participant))) {
+    const participant = await Participant.findById(participants[i]);
+    if (!participant) {
       res.status(400);
       throw new Error("At least one Participant could not be found");
     }
@@ -68,7 +68,7 @@ const deleteSession = asyncHandler(async (req, res) => {
 
   await session.remove();
 
-  res.status(204);
+  return res.json(session);
 });
 
 module.exports = {

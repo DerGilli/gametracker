@@ -46,11 +46,11 @@ const deleteSession = async (sessionId, token) => {
   return response.data;
 };
 
-const gameService = {
+const sessionService = {
   getSessions,
   createSession,
   updateSession,
   deleteSession,
 };
 
-export default gameService;
+export default sessionService;

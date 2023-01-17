@@ -7,8 +7,8 @@ function SessionItem(props) {
   const participantState = useSelector((state) => state.participant);
 
   return (
-    <Card>
-      <CardMedia sx={{ height: 180 }} image={boardGame} title="green iguana" />
+    <Card onClick={props.onClick}>
+      <CardMedia sx={{ height: 180 }} image={boardGame} title="boardgame" />
       <CardContent className="flex flex-col gap-3">
         <div className="flex justify-between">
           <b>

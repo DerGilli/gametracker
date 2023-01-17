@@ -18,7 +18,7 @@ const getScores = asyncHandler(async (req, res) => {
 // @access  Private
 const setScore = asyncHandler(async (req, res) => {
   const { session, value, participant } = req.body;
-  if (!session || !value || !participant) {
+  if (!session || value === undefined || !participant) {
     res.status(400);
     throw new Error("Please provide necessary information");
   }
@@ -35,7 +35,8 @@ const setScore = asyncHandler(async (req, res) => {
     throw new Error("Participant not found");
   }
 
-  const scoreAlreadyExists = await Score.find({ session, participant });
+  const scoreAlreadyExists =
+    (await Score.find({ session, participant })).length > 0;
   if (scoreAlreadyExists) {
     res.status(400);
     throw new Error("Score already exists");

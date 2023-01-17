@@ -1,20 +1,33 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import sessionService from "./sessionService";
+import scoreService from "./scoreService";
 
 const initialState = {
-  sessions: [],
+  scores: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
 };
 
-export const getSessions = createAsyncThunk(
-  "session/get",
-  async (_, thunkAPI) => {
+export const getScores = createAsyncThunk("score/get", async (_, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token;
+    return await scoreService.getScores(token);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const createScore = createAsyncThunk(
+  "score/create",
+  async (score, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await sessionService.getSessions(token);
+      return await scoreService.createScore(score, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -27,12 +40,12 @@ export const getSessions = createAsyncThunk(
   }
 );
 
-export const createSession = createAsyncThunk(
-  "session/create",
-  async (session, thunkAPI) => {
+export const updateScore = createAsyncThunk(
+  "score/update",
+  async (score, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await sessionService.createSession(session, token);
+      return await scoreService.updateScore(score, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -45,12 +58,12 @@ export const createSession = createAsyncThunk(
   }
 );
 
-export const updateSession = createAsyncThunk(
-  "session/update",
-  async (session, thunkAPI) => {
+export const deleteScore = createAsyncThunk(
+  "score/delete",
+  async (scoreId, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await sessionService.updateSession(session, token);
+      return await scoreService.deleteScore(scoreId, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -63,26 +76,8 @@ export const updateSession = createAsyncThunk(
   }
 );
 
-export const deleteSession = createAsyncThunk(
-  "session/delete",
-  async (sessionId, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await sessionService.deleteSession(sessionId, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const sessionSlice = createSlice({
-  name: "session",
+export const scoreSlice = createSlice({
+  name: "score",
   initialState,
   reducers: {
     reset: (state) => {
@@ -94,57 +89,61 @@ export const sessionSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getSessions.pending, (state) => {
+      .addCase(getScores.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getSessions.fulfilled, (state, action) => {
+      .addCase(getScores.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.sessions = action.payload;
+        state.scores = action.payload;
       })
-      .addCase(getSessions.rejected, (state, action) => {
+      .addCase(getScores.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        state.sessions = [];
+        state.scores = [];
       })
-      .addCase(createSession.pending, (state) => {
+      .addCase(createScore.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createSession.fulfilled, (state, action) => {
+      .addCase(createScore.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.sessions.push(action.payload);
+        state.scores.push(action.payload);
       })
-      .addCase(createSession.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(updateSession.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateSession.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.sessions = [...state.sessions, action.payload];
-      })
-      .addCase(updateSession.rejected, (state, action) => {
+      .addCase(createScore.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(deleteSession.pending, (state) => {
+      .addCase(updateScore.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteSession.fulfilled, (state, action) => {
+      .addCase(updateScore.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.sessions = state.sessions.filter((session) => {
-          return session._id !== action.payload._id;
+        const tmpScores = state.scores.filter(
+          (score) => score._id !== action.payload._id
+        );
+        tmpScores.push(action.payload);
+        state.scores = tmpScores;
+      })
+      .addCase(updateScore.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(deleteScore.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteScore.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.scores = state.scores.filter((score) => {
+          return score._id !== action.payload.id;
         });
       })
-      .addCase(deleteSession.rejected, (state, action) => {
+      .addCase(deleteScore.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -152,5 +151,5 @@ export const sessionSlice = createSlice({
   },
 });
 
-export const { reset } = sessionSlice.actions;
-export default sessionSlice.reducer;
+export const { reset } = scoreSlice.actions;
+export default scoreSlice.reducer;
