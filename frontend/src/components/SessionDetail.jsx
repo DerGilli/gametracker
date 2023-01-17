@@ -20,7 +20,7 @@ import { useState } from "react";
 function SessionDetail(props) {
   const dispatch = useDispatch();
   const gameState = useSelector((state) => state.game);
-  const participantState = useSelector((state) => state.participant);
+  const participantState = useSelector((state) => state.participants);
   const scoreState = useSelector((state) => state.score);
 
   const game = gameState.games.find((game) => game._id === props.session?.game);
@@ -41,7 +41,6 @@ function SessionDetail(props) {
 
   const handleSave = () => {
     sessionScores.forEach((score) => {
-      console.log(score);
       dispatch(updateScore(score));
     });
     props.handleClose();

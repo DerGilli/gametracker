@@ -6,17 +6,19 @@ import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Statistics from "./pages/Statistics";
 
 function App() {
   return (
     <>
       <Router>
         <Header />
-        <Container>
+        <Container classes={{ root: "flex-1" }}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/statistics/:userId" element={<Statistics />} />
           </Routes>
         </Container>
       </Router>

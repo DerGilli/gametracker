@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import {
   createParticipant,
   reset as participantReset,
-} from "../features/participants/participantSlice";
+} from "../features/participants/participantsSlice";
 import { createGame, reset as gamesReset } from "../features/games/gameSlice";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
@@ -22,7 +22,7 @@ function SessionForm() {
   const [game, setGame] = useState(null);
   const [participants, setParticipants] = useState(null);
 
-  const participantState = useSelector((state) => state.participant);
+  const participantState = useSelector((state) => state.participants);
   const gameState = useSelector((state) => state.game);
 
   const dispatch = useDispatch();

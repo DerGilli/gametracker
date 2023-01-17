@@ -7,7 +7,7 @@ import {
   getSessions,
   reset as sessionReset,
 } from "../features/sessions/sessionSlice";
-import { getParticipants } from "../features/participants/participantSlice";
+import { getParticipants } from "../features/participants/participantsSlice";
 import { getGames } from "../features/games/gameSlice";
 import { getScores } from "../features/scores/scoreSlice";
 import { toast } from "react-toastify";

@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
 import sessionReducer from "../features/sessions/sessionSlice";
 import gameReducer from "../features/games/gameSlice";
-import participantReducer from "../features/participants/participantSlice";
+import participantsReducer from "../features/participants/participantsSlice";
 import scoreReducer from "../features/scores/scoreSlice";
 
 export const store = configureStore({
@@ -10,7 +10,7 @@ export const store = configureStore({
     auth: authReducer,
     game: gameReducer,
     session: sessionReducer,
-    participant: participantReducer,
+    participants: participantsReducer,
     score: scoreReducer,
   },
 });

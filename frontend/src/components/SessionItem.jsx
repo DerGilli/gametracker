@@ -1,10 +1,12 @@
 import { Card, CardContent, CardMedia, Chip } from "@mui/material";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import boardGame from "../assets/default_board_game_small.jpg";
 
 function SessionItem(props) {
   const gameState = useSelector((state) => state.game);
-  const participantState = useSelector((state) => state.participant);
+  const participantState = useSelector((state) => state.participants);
+  const navigate = useNavigate();
 
   return (
     <Card onClick={props.onClick} classes={{ root: "h-full" }}>
@@ -33,6 +35,7 @@ function SessionItem(props) {
             <Chip
               key={participantID}
               variant="outlined"
+              onClick={() => navigate(`/statistics/${participantID}`)}
               label={
                 participantState.participants.find(
                   (participant) => participantID === participant._id

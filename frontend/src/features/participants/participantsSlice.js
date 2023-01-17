@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import participantService from "./participantService";
+import participantService from "./participantsService";
 
 const initialState = {
   participants: [],
+  participant: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -10,11 +11,29 @@ const initialState = {
 };
 
 export const getParticipants = createAsyncThunk(
-  "participant/get",
+  "participants/get",
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
       return await participantService.getParticipants(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getParticipant = createAsyncThunk(
+  "participant/get",
+  async (participantId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await participantService.getParticipant(participantId, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -81,8 +100,8 @@ export const deleteParticipant = createAsyncThunk(
   }
 );
 
-export const participantSlice = createSlice({
-  name: "participant",
+export const participantsSlice = createSlice({
+  name: "participants",
   initialState,
   reducers: {
     reset: (state) => {
@@ -107,6 +126,20 @@ export const participantSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.participants = [];
+      })
+      .addCase(getParticipant.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getParticipant.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.participant = action.payload;
+      })
+      .addCase(getParticipant.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.participant = null;
       })
       .addCase(createParticipant.pending, (state) => {
         state.isLoading = true;
@@ -152,5 +185,5 @@ export const participantSlice = createSlice({
   },
 });
 
-export const { reset } = participantSlice.actions;
-export default participantSlice.reducer;
+export const { reset } = participantsSlice.actions;
+export default participantsSlice.reducer;

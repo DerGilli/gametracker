@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const Participant = require("../models/participantModel");
 const User = require("../models/userModel");
+const Session = require("../models/sessionModel");
+const Score = require("../models/scoreModel");
 
 // @desc    Get participants
 // @route   GET /api/participants
@@ -9,6 +11,34 @@ const getParticipants = asyncHandler(async (req, res) => {
   const participants = await Participant.find({ user: req.user.id });
 
   res.json(participants);
+});
+
+// @desc    Get participant
+// @route   GET /api/participant
+// @access  Private
+const getParticipant = asyncHandler(async (req, res) => {
+  const participant = await Participant.findById(req.params.id);
+
+  if (!participant) {
+    res.status(400);
+    throw new Error("Participant not found");
+  }
+
+  if (!req.user) {
+    res.status(401);
+    throw new Error("User not found");
+  }
+
+  if (participant.user.toString() !== req.user.id) {
+    res.status(401);
+    throw new Error("Not allowed");
+  }
+
+  const sessions = await Session.find({ participants: participant._id });
+  const scores = await Score.find({ participant: participant._id });
+  const responseObject = { ...participant.toObject(), sessions, scores };
+
+  res.json(responseObject);
 });
 
 // @desc    Set participant
@@ -93,6 +123,7 @@ const deleteParticipant = asyncHandler(async (req, res) => {
 
 module.exports = {
   getParticipants,
+  getParticipant,
   setParticipant,
   updateParticipant,
   deleteParticipant,

@@ -12,6 +12,16 @@ const getParticipants = async (token) => {
   return response.data;
 };
 
+const getParticipant = async (participantId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(API_URL + participantId, config);
+  return response.data;
+};
+
 const createParticipant = async (participantData, token) => {
   const config = {
     headers: {
@@ -48,6 +58,7 @@ const deleteParticipant = async (participantId, token) => {
 
 const gameService = {
   getParticipants,
+  getParticipant,
   createParticipant,
   updateParticipant,
   deleteParticipant,
