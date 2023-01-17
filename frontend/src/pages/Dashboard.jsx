@@ -23,7 +23,6 @@ function Dashboard() {
 
   const { user } = useSelector((state) => state.auth);
   const sessionState = useSelector((state) => state.session);
-  const scoreState = useSelector((state) => state.score);
 
   useEffect(() => {
     dispatch(getSessions());
@@ -52,7 +51,7 @@ function Dashboard() {
 
   return (
     <>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} alignItems="stretch">
         <Grid item xs={12}>
           <SessionForm />
         </Grid>

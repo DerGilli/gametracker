@@ -7,7 +7,7 @@ function SessionItem(props) {
   const participantState = useSelector((state) => state.participant);
 
   return (
-    <Card onClick={props.onClick}>
+    <Card onClick={props.onClick} classes={{ root: "h-full" }}>
       <CardMedia sx={{ height: 180 }} image={boardGame} title="boardgame" />
       <CardContent className="flex flex-col gap-3">
         <div className="flex justify-between">
@@ -28,7 +28,7 @@ function SessionItem(props) {
             {" Uhr"}
           </span>
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-1 flex-wrap">
           {props.session.participants.map((participantID) => (
             <Chip
               key={participantID}

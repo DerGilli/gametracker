@@ -16,7 +16,7 @@ function ScoreInput(props) {
       </Button>
       <input
         type="number"
-        className="text-center"
+        className="text-center w-12"
         value={props.score.value}
         onChange={(event) => props.handleChange(event.target.value)}
       />
