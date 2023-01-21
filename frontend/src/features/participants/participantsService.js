@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/participants/";
+const API_URL = "/api/participants/";
 
 const getParticipants = async (token) => {
   const config = {

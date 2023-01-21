@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/scores/";
+const API_URL = "/api/scores/";
 
 const getScores = async (token) => {
   const config = {

@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
@@ -18,6 +19,16 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/scores", require("./routes/scoreRoutes"));
 app.use("/api/participants", require("./routes/participantRoutes"));
 app.use("/api/sessions", require("./routes/sessionRoutes"));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(
+      path.resolve(__dirname, "../", "frontend", "build", "index.html")
+    )
+  );
+}
 
 app.use(errorHandler);
 
