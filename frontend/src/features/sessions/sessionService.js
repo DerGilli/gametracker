@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/sessions/";
+const API_URL = "/api/sessions/";
 
 const getSessions = async (token) => {
   const config = {
