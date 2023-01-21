@@ -11,10 +11,6 @@ const participantSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add a name"],
     },
-    score: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "Score",
-    },
   },
   {
     timestamps: true,

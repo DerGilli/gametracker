@@ -34,9 +34,25 @@ const getParticipant = asyncHandler(async (req, res) => {
     throw new Error("Not allowed");
   }
 
-  const sessions = await Session.find({ participants: participant._id });
-  const scores = await Score.find({ participant: participant._id });
-  const responseObject = { ...participant.toObject(), sessions, scores };
+  const scores = await Score.find({ user: req.user.id });
+  const sessions = (
+    await Session.find({
+      participants: participant._id,
+    })
+      .populate("game", "name _id")
+      .populate("participants", "name _id")
+  ).map((session) => ({
+    ...session.toObject(),
+    participants: session.participants.map((participant) => ({
+      ...participant.toObject(),
+      score: scores.find(
+        (score) =>
+          score.session.equals(session._id) &&
+          score.participant.equals(participant._id)
+      )?.value,
+    })),
+  }));
+  const responseObject = { ...participant.toObject(), sessions };
 
   res.json(responseObject);
 });

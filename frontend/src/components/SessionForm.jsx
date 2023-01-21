@@ -56,7 +56,6 @@ function SessionForm() {
 
     for (let i = 0; i < validParticipants.length; i++) {
       const participant = validParticipants[i];
-      console.log(participant);
       dispatch(
         createScore({
           value: 0,

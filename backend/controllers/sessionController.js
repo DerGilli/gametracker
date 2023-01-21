@@ -8,7 +8,7 @@ const Participant = require("../models/participantModel");
 // @route   GET /api/sessions
 // @access  Private
 const getSeessions = asyncHandler(async (req, res) => {
-  const sessions = await Session.find({ user: req.user.id });
+  const sessions = await Session.find({ user: req.user.id }).populate("game");
 
   res.json(sessions);
 });
@@ -42,7 +42,7 @@ const setSession = asyncHandler(async (req, res) => {
     game: game,
   });
 
-  res.json(session);
+  res.json(await session.populate("game"));
 });
 
 // @desc    Delete game

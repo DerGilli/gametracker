@@ -15,8 +15,9 @@ function SessionItem(props) {
         <div className="flex justify-between items-center">
           <b>
             {
-              gameState.games.find((game) => game._id === props.session.game)
-                ?.name
+              gameState.games.find(
+                (game) => game._id === props.session.game._id
+              )?.name
             }
           </b>
           <small>

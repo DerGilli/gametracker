@@ -18,7 +18,6 @@ const createScore = async (scoreData, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  console.log(scoreData);
   const response = await axios.post(API_URL, scoreData, config);
   return response.data;
 };

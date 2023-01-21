@@ -10,6 +10,7 @@ const sessionSchema = mongoose.Schema(
     participants: {
       type: [mongoose.Schema.Types.ObjectId],
       required: [true, "Please add at least one participant"],
+      ref: "Participant",
     },
     game: {
       type: mongoose.Schema.Types.ObjectId,
