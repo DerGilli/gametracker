@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0c01f523.css",
+    "main.js": "/static/js/main.afcd41ec.js",
+    "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
+    "static/media/default_board_game_small.jpg": "/static/media/default_board_game_small.19c586c0a14927eb2ec8.jpg",
+    "index.html": "/index.html",
+    "main.0c01f523.css.map": "/static/css/main.0c01f523.css.map",
+    "main.afcd41ec.js.map": "/static/js/main.afcd41ec.js.map",
+    "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0c01f523.css",
+    "static/js/main.afcd41ec.js"
+  ]
+}
